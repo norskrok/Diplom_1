@@ -87,4 +87,3 @@ public class BurgerTest {
         assertTrue(receipt.contains("220"));
     }
 }
-
