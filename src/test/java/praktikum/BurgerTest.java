@@ -46,15 +46,25 @@ public class BurgerTest {
     }
 
     @Test
-    public void moveIngredientTest() {
+    public void moveIngredientFirstPositionTest() {
         Ingredient secondIngredient = mock(Ingredient.class);
-        burger.addIngredient(ingredient); // index 0
-        burger.addIngredient(secondIngredient); // index 1
+        burger.addIngredient(ingredient);
+        burger.addIngredient(secondIngredient);
+
+        burger.moveIngredient(0, 1);
+
+        assertEquals(secondIngredient, burger.ingredients.get(0));
+    }
+
+    @Test
+    public void moveIngredientSecondPositionTest() {
+        Ingredient secondIngredient = mock(Ingredient.class);
+        burger.addIngredient(ingredient);
+        burger.addIngredient(secondIngredient);
 
         burger.moveIngredient(0, 1);
 
         assertEquals(ingredient, burger.ingredients.get(1));
-        assertEquals(secondIngredient, burger.ingredients.get(0));
     }
 
     @Test
@@ -69,7 +79,30 @@ public class BurgerTest {
     }
 
     @Test
-    public void getReceiptTest() {
+    public void getReceiptContainsBunNameTest() {
+        prepareBurgerForReceipt();
+        assertTrue(burger.getReceipt().toLowerCase().contains("black bun"));
+    }
+
+    @Test
+    public void getReceiptContainsIngredientNameTest() {
+        prepareBurgerForReceipt();
+        assertTrue(burger.getReceipt().toLowerCase().contains("sour cream"));
+    }
+
+    @Test
+    public void getReceiptContainsIngredientTypeTest() {
+        prepareBurgerForReceipt();
+        assertTrue(burger.getReceipt().toLowerCase().contains("sauce"));
+    }
+
+    @Test
+    public void getReceiptContainsTotalPriceTest() {
+        prepareBurgerForReceipt();
+        assertTrue(burger.getReceipt().contains("220"));
+    }
+
+    private void prepareBurgerForReceipt() {
         when(bun.getName()).thenReturn("black bun");
         when(bun.getPrice()).thenReturn(100f);
         when(ingredient.getName()).thenReturn("sour cream");
@@ -78,12 +111,5 @@ public class BurgerTest {
 
         burger.setBuns(bun);
         burger.addIngredient(ingredient);
-
-        String receipt = burger.getReceipt();
-
-        assertTrue(receipt.toLowerCase().contains("black bun"));
-        assertTrue(receipt.toLowerCase().contains("sour cream"));
-        assertTrue(receipt.toLowerCase().contains("sauce"));
-        assertTrue(receipt.contains("220"));
     }
 }
